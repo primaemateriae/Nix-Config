@@ -1,11 +1,11 @@
 { config, pkgs, lib, inputs, ... }:
-{  
+{
   imports = [
     ./desktop/browsers/ladybird.nix
     ./desktop/editors/gedit.nix
   ];
 
-  
+
   home.packages = with pkgs; [
     xh
     hexyl
@@ -34,7 +34,7 @@
     # httpie # Command line HTTP client whose goal is to make CLI human-friendly
     xh # Friendly and fast tool for sending HTTP requests
     gnome-clocks
-    libretrack
+    # libretrack
     openssl
     xdg-utils
     signal-desktop
@@ -64,7 +64,7 @@
     };
   };
 
-   
+
   # mpd
   # rmpc
   # ripgrep-all
