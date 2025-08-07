@@ -171,6 +171,31 @@
         "type": "github"
       }
     },
+    "hyprgrass": {
+      "inputs": {
+        "hyprland": [
+          "hyprland"
+        ],
+        "nixpkgs": [
+          "hyprgrass",
+          "hyprland",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1754316222,
+        "narHash": "sha256-GfM8GdCKKG6KH1P4mAm4oW7F+f/mamEoaFb7nXBBK7s=",
+        "owner": "horriblename",
+        "repo": "hyprgrass",
+        "rev": "09f7f332a9cedd053c3de60b8a286c5cfa711152",
+        "type": "github"
+      },
+      "original": {
+        "owner": "horriblename",
+        "repo": "hyprgrass",
+        "type": "github"
+      }
+    },
     "hyprland": {
       "inputs": {
         "aquamarine": "aquamarine",
@@ -461,6 +486,7 @@
       "inputs": {
         "firefox-addons": "firefox-addons",
         "home-manager": "home-manager",
+        "hyprgrass": "hyprgrass",
         "hyprland": "hyprland",
         "hyprland-plugins": "hyprland-plugins",
         "nixpkgs": "nixpkgs_2"

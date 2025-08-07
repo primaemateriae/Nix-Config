@@ -6,6 +6,10 @@
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; # We are using the official custom flake from Hyprland.
     portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # Make sure we are using their portal package to avoid caching issues.
 
+    plugins = [
+      inputs.hyprgrass.packages.${pkgs.system}.default
+    ];
+
     settings = {
       # Monitor configuration
       monitor = [
@@ -150,10 +154,10 @@
       # Gestures
       gestures = {
         workspace_swipe = true;
-        workspace_swipe_fingers = 3;
-        workspace_swipe_distance = 1000;
-        workspace_swipe_cancel_ratio = 0.5;
-        workspace_swipe_forever = false;
+        # workspace_swipe_fingers = 3;
+        # workspace_swipe_distance = 1000;
+        workspace_swipe_cancel_ratio = 0.15;
+        # workspace_swipe_forever = false;
       };
 
       # Per-device config
@@ -284,6 +288,7 @@
         ${pkgs.waybar}/bin/waybar
       '';
     };
+
   };
 
   imports = [ ./ecosystem.nix ];
