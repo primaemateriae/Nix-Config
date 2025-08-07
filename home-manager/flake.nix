@@ -12,18 +12,18 @@
     };
 
     # Official flake for Hyprland from developpers. More cutting edge and maintains versions compatability with plugins.
-    hyprland.url = "github:hyprwm/Hyprland"; # Do not change Hyprland's Nixpkgs (e.g. follows nixpkgs), as warned by the offocial hyprland documentations. Could force one to source compile.
+    hyprland.url = "github:hyprwm/Hyprland"; # IMPORTANT: Official docs disuades against changing Hyprland's Nixpkgs (e.g. follows nixpkgs). Could cause ABI incompatabilities and source compilation.
 
     # Official hyprland plugins. https://github.com/hyprwm/hyprland-plugins
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland"; # Important that this follows Hyprland so that the version of plugins will play nicely.
+      inputs.hyprland.follows = "hyprland"; # IMPORTANT: Do not change. Follow hyprland's flake to ensure ABI compatability. 
     };
 
     # Community Plugin for touch screen gestures on Hyprland. https://github.com/horriblename/hyprgrass
     hyprgrass = {
       url = "github:horriblename/hyprgrass";
-      inputs.hyprland.follows = "hyprland"; # keep it in sync
+      inputs.hyprland.follows = "hyprland"; # IMPORTANT: Do not change. Follow hyprland's flake to ensure ABI compatability. 
     };
 
     # Community mained packages for firefox addons. 
