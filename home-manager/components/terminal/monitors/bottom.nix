@@ -38,8 +38,10 @@
         cpu = {
           all_entry_color = "grey";
           avg_entry_color = "255, 0, 255";
+          # avg_entry_color = "255, 0, 0";
           # avg_entry_color = "255, 255, 255";
-          cpu_core_colors = [ "red" "yellow" "green" "blue" "cyan" "magenta" ];
+          # cpu_core_colors = [ "red" "green" "blue" "cyan" "magenta" ];
+          cpu_core_colors = [ "grey" ];
         };
 
         memory = {

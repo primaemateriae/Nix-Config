@@ -6,6 +6,7 @@
     ./file-conversion/basics.nix
     ./office/libreoffice.nix
     ./editors/zed.nix
+    ./editors/obsidian.nix
     ./raster-editors/krita.nix
   ];
 }
