@@ -9,12 +9,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland.url = "github:hyprwm/Hyprland"; # Do not change Hyprland's Nixpkgs, as warned by the offocial hyprland documentations. This could break the cache.
-    # hyprland.url = "github:hyprwm/Hyprland/v0.50.1"; # Do not change Hyprland's Nixpkgs, as warned by the offocial hyprland documentations. This could break the cache.
+    hyprland.url = "github:hyprwm/Hyprland"; # Do not change Hyprland's Nixpkgs (e.g. follows nixpkgs), as warned by the offocial hyprland documentations. Could force one to source compile.
 
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland"; # Follow Hyprland.
+      inputs.hyprland.follows = "hyprland"; # Important that this follows Hyprland so that the version of plugins will play nicely.
     };
 
     firefox-addons = {
