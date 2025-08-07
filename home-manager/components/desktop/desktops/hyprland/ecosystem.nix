@@ -45,20 +45,21 @@
     };
     hyprsunset = {
       enable = true;
-      transitions = {
-        sunrise = {
-          calendar = "*-*-* 06:00:00";
-          requests = [
-            [ "temperature" "6500" ]
-            [ "gamma 100" ]
-          ];
-        };
-        sunset = {
-          calendar = "*-*-* 21:00:00";
-          requests = [
-            [ "temperature" "4500" ]
-          ];
-        };
+      settings = {
+        max-gamma = 100;
+
+        profile = [
+          # The timee to return to default. Profiles with the "identity" sets hyprsunset to as if it were not running
+          {
+            time = "6:00";
+            identity = true;
+          }
+          {
+            time = "22:00";
+            temperature = 5000;
+            gamma = 0.8;
+          }
+        ];
       };
     };
     hyprpolkitagent.enable = true;
