@@ -44,6 +44,7 @@
     kernelPackages = pkgs.linuxPackages_latest; # Use the latest kernal.
     kernelParams = [
       "fbcon=rotate:1" # Rotate the default screen orientation on GPD Pocket 3 due to manufacture orientation.
+      "video=DSI-1:panel_orientation=right_side_up"
       "splash"
       "quiet"
     ];
@@ -92,6 +93,7 @@
     # Graphics 
     graphics.enable = true; # Whether to enable hardware accelerated graphics drivers. Mostly set by the corresponding modules but no hard setting it here. 
 
+    sensor.iio.enable = true;
   };
 
   # Swaps
@@ -171,9 +173,12 @@
     fail2ban.enable = true; # Daemon to ban hosts that causes multiple authentication errors.
 
     # Configure keymap in X11
-    xserver.xkb = {
-      layout = "us";
-      variant = "";
+    xserver = {
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+      wacom.enable = true;
     };
 
     blueman.enable = true; # Full featured bluetooth manager written in Python with GTK.
@@ -205,6 +210,20 @@
     protonmail-bridge.enable = true;
 
     dbus.enable = true;
+
+    udev = {
+      # Makes “portrait = portrait”, otherwise everything is 90° off.
+      extraHwdb = ''
+        sensor:modalias:acpi:MXC6655*:dmi:*:svnGPD:pnG1621-02:* ACCEL_MOUNT_MATRIX=-1,0,0;0,1,0;0,0,1
+      '';
+      # rotate pen & touch 90° clockwise so it matches the screen
+      extraRules = ''
+        ACTION=="add|change", \
+          KERNEL=="event*", \
+          ATTRS{name}=="GXTP7380:00 27C6:0113", \
+          ENV{LIBINPUT_CALIBRATION_MATRIX}="0 1 0 -1 0 1"
+      '';
+    };
   };
 
   programs = {
@@ -213,6 +232,8 @@
       xwayland.enable = true; # Allow X11 applications to still function in Wayland. 
       # package = inputs.hyprland.packages."${pkgs.system}".hyprland; # Use the Hyprland package from the official flake. Allows more control when installing plugins. 
     };
+
+    iio-hyprland.enable = true;
 
     git = {
       enable = true; # Distributed Version Control System
