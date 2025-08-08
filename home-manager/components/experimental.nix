@@ -38,6 +38,8 @@
     openssl
     xdg-utils
     signal-desktop
+    fastfetch
+    wthrr
   ];
 
   programs.clock-rs = {
