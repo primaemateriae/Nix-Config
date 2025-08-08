@@ -78,8 +78,8 @@
 
         gs = "${pkgs.git}/bin/git status";
         ga = "${pkgs.git}/bin/git add";
-        gc = "${pkgs.git}/bin/git commit -m";
-        gac = "${pkgs.git}/bin/git commit -am";
+        gc = "${pkgs.git}/bin/git commit -m \"\"";
+        gac = "${pkgs.git}/bin/git commit -am \"\"";
         gp = "${pkgs.git}/bin/git push";
         gl = "${pkgs.git}/bin/git log --online --graph";
       };
