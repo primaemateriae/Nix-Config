@@ -77,12 +77,11 @@
         pathof = "readlink -f";
 
         gs = "${pkgs.git}/bin/git status";
-        gc = "${pkgs.git}/bin/git commit";
+        ga = "${pkgs.git}/bin/git add";
+        gc = "${pkgs.git}/bin/git commit -m";
+        gac = "${pkgs.git}/bin/git commit -am";
         gp = "${pkgs.git}/bin/git push";
         gl = "${pkgs.git}/bin/git log --online --graph";
-
-        monh = "${pkgs.hyprland}/bin/hyprctl keyword monitor 'DSI-1,preferred,auto,1,transform,3'";
-        monv = "${pkgs.hyprland}/bin/hyprctl keyword monitor 'DSI-1,preferred,auto,1,transform,0'";
       };
     };
   };

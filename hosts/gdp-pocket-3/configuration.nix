@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, lib, ... }:
 
 {
   imports =
@@ -93,7 +93,8 @@
     # Graphics 
     graphics.enable = true; # Whether to enable hardware accelerated graphics drivers. Mostly set by the corresponding modules but no hard setting it here. 
 
-    sensor.iio.enable = true;
+    # Industrial I/O subsystem of the Linux Kernel (IIO) 
+    sensor.iio.enable = true; # runs a D-Bus service for other apps to read proxies sensor devices (accelerometers, light sensors, compass). Monitor with `monitor-sensor`.
   };
 
   # Swaps
@@ -210,20 +211,6 @@
     protonmail-bridge.enable = true;
 
     dbus.enable = true;
-
-    udev = {
-      # Makes “portrait = portrait”, otherwise everything is 90° off.
-      extraHwdb = ''
-        sensor:modalias:acpi:MXC6655*:dmi:*:svnGPD:pnG1621-02:* ACCEL_MOUNT_MATRIX=-1,0,0;0,1,0;0,0,1
-      '';
-      # rotate pen & touch 90° clockwise so it matches the screen
-      extraRules = ''
-        ACTION=="add|change", \
-          KERNEL=="event*", \
-          ATTRS{name}=="GXTP7380:00 27C6:0113", \
-          ENV{LIBINPUT_CALIBRATION_MATRIX}="0 1 0 -1 0 1"
-      '';
-    };
   };
 
   programs = {
@@ -233,7 +220,7 @@
       # package = inputs.hyprland.packages."${pkgs.system}".hyprland; # Use the Hyprland package from the official flake. Allows more control when installing plugins. 
     };
 
-    iio-hyprland.enable = true;
+    # iio-hyprland.enable = true;
 
     git = {
       enable = true; # Distributed Version Control System
@@ -285,6 +272,8 @@
     usbutils
     pciutils
     cron
+
+    # jq
   ];
 
   # Time, Timezone, and Synchronization Settings.

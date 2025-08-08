@@ -1,13 +1,21 @@
 { config, pkgs, lib, inputs, ... }:
 {
+  home.packages = with pkgs; [
+    jq # iio-hyprland needs jq to work correctly, but does not automatically pull it. 
+    iio-hyprland
+  ];
+
   wayland.windowManager.hyprland = {
     enable = true;
 
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; # We are using the official custom flake from Hyprland.
-    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # Make sure we are using their portal package to avoid caching issues.
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; # IMPORTANT: We are using the official custom flake from Hyprland.
+    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # IMPORTANT: Make sure we are using their portal package to avoid caching issues.
+
+    xwayland.enable = true; # Whether to enable XWayland.
 
     plugins = [
-      inputs.hyprgrass.packages.${pkgs.system}.default
+      inputs.hyprgrass.packages.${pkgs.system}.default # Plugin for touch screen gestures 
+      inputs.hyprgrass.packages.${pkgs.system}.hyprgrass-pulse # Integration with pulse-audio
     ];
 
     settings = {
@@ -151,13 +159,15 @@
         };
       };
 
-      # Gestures
+      # Gestures https://wiki.hypr.land/Configuring/Variables/#gestures
       gestures = {
-        workspace_swipe = true;
-        # workspace_swipe_fingers = 3;
-        # workspace_swipe_distance = 1000;
-        workspace_swipe_cancel_ratio = 0.15;
-        # workspace_swipe_forever = false;
+        workspace_swipe = true; # Enable workspace swipe gesture on touchpad
+        workspace_swipe_fingers = 3; # How many fingers for the touchpad gesture
+        workspace_swipe_distance = 1000; # The distance in px of the touchpad gesture
+        workspace_swipe_create_new = true; # Whether a swipe right on the last workspace should create a new one.
+        workspace_swipe_min_speed_to_force = 20; # Minimum speed in px per timepoint to force the change and ignoring cancel_ratio. This allows flicks. Setting to 0 will disable this mechanic.
+        workspace_swipe_cancel_ratio = 0.3; # Percentage in [0.0, 1,0] of the swipe gesture that must be done to proceed.
+        workspace_swipe_forever = false; # Swiping will not clamp at the neighboring workspaces but continue to the further ones.
       };
 
       # Per-device config
@@ -284,11 +294,35 @@
 
       # Startup Commands
       # exec-once = ''${startupScript}/bin/start'';
-      exec-once = ''
-        ${pkgs.waybar}/bin/waybar
-      '';
+      exec-once = [
+        "${pkgs.waybar}/bin/waybar &"
+        "${pkgs.iio-hyprland}/bin/iio-hyprland DSI-1"
+      ];
     };
 
+    extraConfig = /*hypr*/''
+      plugin {
+        touch_gestures {
+          sensitivity = 4.0 # Tablet screens usually need higher sensitivity
+          workspace_swipe_fingers = 3 # Must be more than 3
+
+          # swipe up from bottom edge
+          hyprgrass-bind = , edge:d:u, exec, firefox
+
+          # tap with 3 fingers
+          hyprgrass-bind = , tap:3, exec, wezterm
+
+          # # Quick test: 3-finger tap pops a Hyprland notification.
+          # hyprgrass-bind = , tap:3, exec, hyprctl notify -1 1500 "rgb(7aa2f7)" "detected"
+        }
+        hyprgrass-pulse {
+          # Along which edge to trigger the volume changer
+          # Slide along the edge to adjust volume
+          # One of: l, r, u, d
+          edge = l
+        }
+      }
+    '';
   };
 
   imports = [ ./ecosystem.nix ];
