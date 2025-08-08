@@ -95,11 +95,13 @@
 
       # Languages Etc.
       nix_shell = {
-        format = "[$symbol$state( \($name\))]($style) ";
+        format = "[$symbol$state( ($name))]($style) ";
         symbol = " ";
         impure_msg = "[impure](red)";
         pure_msg = "[pure](green)";
         style = "#7FB9E1";
+        heuristic = true;
+        disabled = true; #Currently, this does not seem to work correctly even with heuristic.
       };
       rust = {
         format = "[$symbol($version )]($style)";
@@ -113,7 +115,7 @@
 
       # OS Symbols
       os.symbols = {
-        NixOS = " ";
+        NixOS = "[](#7FB9E1) ";
         Macos = " ";
         Debian = " ";
         Redox = " ";
