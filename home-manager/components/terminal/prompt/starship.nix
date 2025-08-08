@@ -8,7 +8,7 @@
     settings = {
       # This is the format for the actual prompt to be made on the terminal. 
       format = ''
-        $os$username$hostname$localip:$directory$git_branch$git_status$git_commit$git_metrics$rust$package$cmd_duration$time
+        $os$username$hostname$localip:$directory$git_branch$git_status$git_commit$git_metrics$nix_shell$rust$python$cmd_duration$time
          $character
       '';
 
@@ -54,16 +54,6 @@
         truncation_symbol = ".../";
       };
 
-      git_branch = {
-        style = "bold purple";
-        format = "[$symbol$branch]($style) ";
-      };
-
-      git_status = {
-        style = "bold red";
-        format = "[$all_status$ahead_behind]($style) ";
-      };
-
       cmd_duration = {
         min_time = 1000; # Show duration for commands longer than 1 seconds
         format = "[~$duration]($style) ";
@@ -73,66 +63,109 @@
       time = {
         disabled = false;
         format = "at [$time]($style) ";
-        time_format = "%F,%T,%:z";
+        time_format = "%F,%T"; # No Timezaone
+        # time_format = "%F,%T,%:z"; # With Timezone
         style = "bold green";
         use_12hr = false;
         utc_time_offset = "local";
       };
 
+      # GIT
+      git_branch = {
+        style = "bold purple";
+        format = "[$symbol$branch$remote_branch]($style) ";
+      };
+      git_commit = {
+        format = "[($hash$tag)]($style) ";
+        style = "green";
+        only_detached = true;
+        tag_disabled = true;
+      };
+      git_status = {
+        format = "[$all_status$ahead_behind]($style)";
+        style = "red";
+        disabled = true;
+      };
+      git_metrics = {
+        format = "([+$added]($added_style))([-$deleted]($deleted_style) )";
+        added_style = "green";
+        deleted_style = "red";
+        disabled = false;
+      };
+
+      # Languages Etc.
+      nix_shell = {
+        format = "[$symbol$state( \($name\))]($style) ";
+        symbol = " ";
+        impure_msg = "[impure](red)";
+        pure_msg = "[pure](green)";
+        style = "#7FB9E1";
+      };
+      rust = {
+        format = "[$symbol($version )]($style)";
+        symbol = "";
+        style = "#CE412B";
+      };
+      python = {
+        format = "[$symbol$pyenv_prefix($version )(($virtualenv) )](#4B8BBE)";
+        symbol = " ";
+      };
+
+      # OS Symbols
       os.symbols = {
         NixOS = " ";
         Macos = " ";
         Debian = " ";
         Redox = " ";
 
-        # This is the default symbols table.
-        AIX = "➿ ";
-        Alpaquita = "🔔 ";
-        AlmaLinux = "💠 ";
-        Alpine = "🏔️ ";
-        Amazon = "🙂 ";
-        Android = "🤖 ";
-        Arch = "🎗️ ";
-        Artix = "🎗️";
-        Bluefin = "🐟 ";
-        CachyOS = "🎗️ ";
-        CentOS = "💠 ";
-        DragonFly = "🐉 ";
-        Emscripten = "🔗 ";
-        EndeavourOS = "🚀 ";
-        Fedora = "🎩 ";
-        FreeBSD = "😈 ";
-        Garuda = "🦅 ";
-        Gentoo = "🗜️ ";
-        HardenedBSD = "🛡️ ";
-        Illumos = "🐦 ";
-        Kali = "🐉 ";
-        Linux = "🐧 ";
-        Mabox = "📦 ";
-        Manjaro = "🥭 ";
-        Mariner = "🌊 ";
-        MidnightBSD = "🌘 ";
-        Mint = "🌿 ";
-        NetBSD = "🚩 ";
-        Nobara = "🎩 ";
-        OpenBSD = "🐡 ";
-        OpenCloudOS = "☁️ ";
-        openEuler = "🦉 ";
-        openSUSE = "🦎 ";
-        OracleLinux = "🦴 ";
-        Pop = "🍭 ";
-        Raspbian = "🍓 ";
-        Redhat = "🎩 ";
-        RedHatEnterprise = "🎩 ";
-        RockyLinux = "💠 ";
-        Solus = "⛵ ";
-        SUSE = "🦎 ";
-        Ubuntu = "🎯 ";
-        Ultramarine = "🔷 ";
-        Unknown = "❓ ";
-        Uos = "🐲 ";
-        Void = "  ";
-        Windows = "🪟 ";
+        # This is from the default symbols table.
+        # AIX = "➿ ";
+        # Alpaquita = "🔔 ";
+        # AlmaLinux = "💠 ";
+        # Alpine = "🏔️ ";
+        # Amazon = "🙂 ";
+        # Android = "🤖 ";
+        # Arch = "🎗️ ";
+        # Artix = "🎗️";
+        # Bluefin = "🐟 ";
+        # CachyOS = "🎗️ ";
+        # CentOS = "💠 ";
+        # DragonFly = "🐉 ";
+        # Emscripten = "🔗 ";
+        # EndeavourOS = "🚀 ";
+        # Fedora = "🎩 ";
+        # FreeBSD = "😈 ";
+        # Garuda = "🦅 ";
+        # Gentoo = "🗜️ ";
+        # HardenedBSD = "🛡️ ";
+        # Illumos = "🐦 ";
+        # Kali = "🐉 ";
+        # Linux = "🐧 ";
+        # Mabox = "📦 ";
+        # Manjaro = "🥭 ";
+        # Mariner = "🌊 ";
+        # MidnightBSD = "🌘 ";
+        # Mint = "🌿 ";
+        # NetBSD = "🚩 ";
+        # Nobara = "🎩 ";
+        # OpenBSD = "🐡 ";
+        # OpenCloudOS = "☁️ ";
+        # openEuler = "🦉 ";
+        # openSUSE = "🦎 ";
+        # OracleLinux = "🦴 ";
+        # Pop = "🍭 ";
+        # Raspbian = "🍓 ";
+        # Redhat = "🎩 ";
+        # RedHatEnterprise = "🎩 ";
+        # RockyLinux = "💠 ";
+        # Solus = "⛵ ";
+        # SUSE = "🦎 ";
+        # Ubuntu = "🎯 ";
+        # Ultramarine = "🔷 ";
+        # Unknown = "❓ ";
+        # Uos = "🐲 ";
+        # Void = "  ";
+        # Windows = "🪟 ";
       };
     };
   };
