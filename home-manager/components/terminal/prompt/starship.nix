@@ -78,16 +78,17 @@
         impure_msg = "[impure](red)";
         pure_msg = "[pure](green)";
         style = "#7FB9E1";
-        heuristic = true;
-        disabled = true; #Currently, this does not seem to work correctly even with heuristic.
+        # heuristic = true;
+        disabled = false;
+        # disabled = true; #Currently, this does not seem to work correctly even with heuristic.
       };
       rust = {
-        format = "[$symbol($version )]($style) ";
+        format = "[$symbol($version )]($style)";
         symbol = " ";
         style = "#CE412B";
       };
       python = {
-        format = "[$symbol$pyenv_prefix($version )(($virtualenv) )](#4B8BBE) ";
+        format = "[$symbol$pyenv_prefix($version )(($virtualenv ))](#4B8BBE)";
         symbol = " ";
       };
 
