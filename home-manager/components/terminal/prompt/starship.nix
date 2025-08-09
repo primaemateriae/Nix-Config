@@ -49,7 +49,7 @@
 
       # GIT
       git_branch = {
-        format = "[$symbol$branch$remote_branch]($style) ";
+        format = "[$symbol$branch(:$remote_branch)]($style) ";
         symbol = ""; # Intentionally no space here.
         style = "#C06EFF";
       };
@@ -65,7 +65,7 @@
         disabled = true;
       };
       git_metrics = {
-        format = "([+$added]($added_style))([-$deleted]($deleted_style)) ";
+        format = "([+$added]($added_style))([-$deleted]($deleted_style) )";
         added_style = "green";
         deleted_style = "red";
         disabled = false;
