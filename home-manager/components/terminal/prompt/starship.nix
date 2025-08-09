@@ -60,9 +60,15 @@
         tag_disabled = true;
       };
       git_status = {
-        format = "[$all_status$ahead_behind]($style) ";
-        style = "red";
-        disabled = true;
+        format = "($ahead_behind$conflicted$modified$deleted$up_to_date )";
+        ahead = "[↑$count](blue)";
+        behind = "[↓$count](yellow)";
+        diverged = "[↕](blue)";
+        conflicted = "[✕](red)";
+        modified = "[⬗](green)";
+        deleted = "[](pink)";
+        up_to_date = "";
+        disabled = false;
       };
       git_metrics = {
         format = "([+$added]($added_style))([-$deleted]($deleted_style) )";
