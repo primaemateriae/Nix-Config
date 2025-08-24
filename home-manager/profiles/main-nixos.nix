@@ -3,19 +3,30 @@
   programs.home-manager.enable = true; # Let home-manager install and manage itself.
 
   imports = [
-    ../components/fonts/basic.nix
+    ../capabilities/all-fonts_core.nix
 
-    ../components/terminal/default.nix
-    ../components/terminal/more.nix
-    ../components/terminal/development.nix
-    ../components/terminal/games.nix
+    # ../components/terminal/default.nix
+    # ../components/terminal/more.nix
+    # ../components/terminal/development.nix
+    # ../components/terminal/games.nix
 
-    ../components/desktop/wayland-default.nix
-    ../components/desktop/basics.nix
-    ../components/desktop/productivity.nix
-    ../components/desktop/creative.nix
+    ../capabilities/tty-core.nix
+    ../capabilities/tty-audio.nix
+    ../capabilities/tty-development.nix
+    ../capabilities/tty-fun.nix
 
-    ../components/experimental.nix
+    # ../capabilities/desktop/wayland-default.nix
+    # ../capabilities/desktop/basics.nix
+    # ../capabilities/desktop/productivity.nix
+    # ../capabilities/desktop/creative.nix
+
+    ../capabilities/wayland-core.nix
+    ../capabilities/graphical-core.nix
+    ../capabilities/graphical-productivity.nix
+    ../capabilities/graphical-art.nix
+
+    # ../components/experimental.nix
+    ../capabilities/all-experimental.nix
   ];
 
   # fonts.fontconfig.enable = true; # Makes fonts avalible system wide
