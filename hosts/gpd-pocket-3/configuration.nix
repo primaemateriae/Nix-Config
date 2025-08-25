@@ -239,17 +239,14 @@
         KERNEL=="event[0-9]*", SUBSYSTEM=="input", ATTRS{idVendor}=="056a", MODE="0666", GROUP="input"
         # Movink 13 specific (DTH-135)
         SUBSYSTEM=="usb", ATTRS{idVendor}=="056a", ATTRS{idProduct}=="03c5", MODE="0666", GROUP="input"
+        # Prevent USB autosuspend for Wacom devices
+        ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="056a", TEST=="power/control", ATTR{power/control}="on"
+        # Prevent Thunderbolt port suspension
+        ACTION=="add", SUBSYSTEM=="thunderbolt", TEST=="power/control", ATTR{power/control}="on"
       '';
     };
 
     thermald.enable = true;
-    tlp = {
-      enable = true;
-      settings = {
-        USB_AUTOSUSPEND = 0; # Prevent USB device suspension
-        RUNTIME_PM_BLACKLIST = "05:00.0"; # Thunderbolt controller (adjust as needed)
-      };
-    };
   };
 
   programs = {

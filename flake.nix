@@ -9,7 +9,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixos-hardware ... }@inputs:
+  outputs = { self, nixpkgs, nixos-hardware, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
