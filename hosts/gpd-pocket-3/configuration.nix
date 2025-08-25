@@ -42,12 +42,24 @@
   # Boot Process 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest; # Use the latest kernal.
+    kernelModules = [
+      # Kernel modules for Wacom support
+      "usbhid"
+      "hid_generic"
+      "wacom"
+      "thunderbolt"
+    ];
     kernelParams = [
       "fbcon=rotate:1" # Rotate the default screen orientation on GPD Pocket 3 due to manufacture orientation.
       "video=DSI-1:panel_orientation=right_side_up"
       "splash"
       "quiet"
+
+      "i915.enable_fbc=1" # Frame buffer compression
+      "i915.enable_psr=0" # Disable panel self refresh (can cause issues)
+      "thunderbolt.dyndbg" # Thunderbolt debugging if needed
     ];
+    initrd.kernelModules = [ "hid-wacom" "i915" ];
     loader = {
       systemd-boot = {
         enable = true; # EFI boot manager (formally gummiboot).
@@ -95,6 +107,8 @@
 
     # Industrial I/O subsystem of the Linux Kernel (IIO) 
     sensor.iio.enable = true; # runs a D-Bus service for other apps to read proxies sensor devices (accelerometers, light sensors, compass). Monitor with `monitor-sensor`.
+
+    enableRedistributableFirmware = true;
   };
 
   # Swaps
@@ -180,6 +194,7 @@
         variant = "";
       };
       wacom.enable = true;
+      libinput.enable = true;
     };
 
     blueman.enable = true; # Full featured bluetooth manager written in Python with GTK.
@@ -211,6 +226,30 @@
     protonmail-bridge.enable = true;
 
     dbus.enable = true;
+
+    # Udev rules for Wacom devices
+    udev = {
+      enable = true;
+      packages = with pkgs; [
+        libwacom
+        xf86_input_wacom
+      ];
+      extraRules = ''
+        # Wacom tablet permissions
+        KERNEL=="event[0-9]*", SUBSYSTEM=="input", ATTRS{idVendor}=="056a", MODE="0666", GROUP="input"
+        # Movink 13 specific (DTH-135)
+        SUBSYSTEM=="usb", ATTRS{idVendor}=="056a", ATTRS{idProduct}=="03c5", MODE="0666", GROUP="input"
+      '';
+    };
+
+    thermald.enable = true;
+    tlp = {
+      enable = true;
+      settings = {
+        USB_AUTOSUSPEND = 0; # Prevent USB device suspension
+        RUNTIME_PM_BLACKLIST = "05:00.0"; # Thunderbolt controller (adjust as needed)
+      };
+    };
   };
 
   programs = {
@@ -273,7 +312,9 @@
     pciutils
     cron
 
-    # jq
+    libwacom
+    xf86_input_wacom
+    wacomtablet
   ];
 
   # Time, Timezone, and Synchronization Settings.
@@ -289,7 +330,13 @@
       main = {
         description = "Main User of the Computer"; # Main account. Mostly for single person systems. 
         isNormalUser = true; # This is a real user and not a system user. 
-        extraGroups = [ "networkmanager" "wheel" ]; # User's Auxillary Groups. 
+        # User's Auxillary Groups. 
+        extraGroups = [
+          "input"
+          "seat"
+          "networkmanager"
+          "wheel"
+        ];
       };
     };
   };
@@ -299,11 +346,12 @@
     # A list of global environment variables.
     sessionVariables = {
       NIXOS_OZONE_WL = "1"; # Enable Ozone Wayland to support Chromium/Electron Applications, otherwise they maynot display correctly. 
+      MOZ_ENABLE_WAYLAND = "1"; # Firefox Wayland native
     };
   };
 
-  # !!!!!!!!!!!!!!!!!!!!! PLEASE READ !!!!!!!!!!!!!!!!!!!!!!!!
-  # 
+  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! PLEASE READ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
