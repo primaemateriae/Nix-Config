@@ -40,6 +40,12 @@
     fastfetch
     wthrr
     typora
+
+    libinput # libinput list-devices, libinput debug-events
+    evtest # Test input events
+    wev # Wayland event viewer
+    libwacom # Wacom device database
+    wacomtablet # KDE configuration GUI
   ];
 
   programs.clock-rs = {

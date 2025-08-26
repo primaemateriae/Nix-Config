@@ -9,7 +9,7 @@
   wayland.windowManager.hyprland = {
     enable = true;
 
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; # IMPORTANT: We are using the official custom flake from Hyprland.
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland; # IMPORTANT: We are using the official custom flake from Hyprland.
     portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # IMPORTANT: Make sure we are using their portal package to avoid caching issues.
 
     xwayland.enable = true; # Whether to enable XWayland.
@@ -23,7 +23,9 @@
       # Monitor configuration
       monitor = [
         "DSI-1,preferred,auto,1,transform,3" # This is the built-in screen for the GPD-Pocket-3. It needs 3 rotations due to the monitor's built-in orientation to be aligned to keyboard use.
-        ",preferred,auto,auto"
+        "DP-1, preferred, auto, 1" # Wacom Movink 13
+        "HDMI-A-1, preferred, auto, 1" # Dell monitor
+        ", preferred, auto, auto"
       ];
 
       # Program definitions
@@ -121,7 +123,7 @@
         force_default_wallpaper = 0;
         disable_hyprland_logo = false; # If true, dsiabled the random Hyprland logo / anime girl background. :(
         disable_splash_rendering = true;
-        # dont_family = "{pkgs.}"
+        # font_family = "{pkgs.}"
         middle_click_paste = true;
       };
 
@@ -152,13 +154,70 @@
 
         touchdevice = {
           enabled = true; # Enables registering touch inputs.
+
           transform = 3; # Same as the display transform for the display settigns, we have to transform 3 due to the touch screen's manufactured orientation.
+          output = "DSI-1";
         };
 
         tablet = {
-          transform = 3;
+          output = "DP-1";
         };
+
       };
+
+      device = [
+        {
+          # GPD Pocket 3's Goodix touchscreen
+          name = "gxtp7380:00-27c6:0113";
+          enabled = true;
+          transform = 3; # Rotate 270° to match DSI-1's transform
+          output = "DSI-1"; # Bind to internal display only
+        }
+        {
+          # Wacom Movink 13's touch input
+          name = "wacom-movink-13-finger";
+          enabled = true;
+          transform = 0; # No rotation needed
+          output = "DP-1"; # Bind to Wacom display only
+        }
+        {
+          # Wacom pen (stylus) - more specific than global tablet setting
+          name = "wacom-movink-13-pen";
+          output = "DP-1"; # Pen input only on Wacom display
+        }
+        {
+          # GPD's stylus if you ever use one
+          name = "gxtp7380:00-27c6:0113-stylus";
+          output = "DSI-1"; # Keep stylus on GPD screen
+        }
+        {
+          name = "apple-inc.-magic-trackpad";
+          sensitivity = 0.5;
+          accel_profile = "adaptive"; # TODO accel profile needs to be customized to match the ergonomics on Apple computers. 
+          # touchpad = {
+          #   scroll_factor = 0.8;
+          # };
+        }
+      ];
+
+      # # Window rules for creative applications
+      # windowrulev2 = [
+      #   # Send creative apps to a special workspace
+      #   "workspace special:creative, class:^(krita)$"
+      #   "workspace special:creative, class:^(inkscape)$"
+      #   "workspace special:creative, class:^(gimp|Gimp)$"
+      #   "workspace special:creative, class:^(blender|Blender)$"
+
+      #   # Additional rules for better tablet experience
+      #   "fullscreen, class:^(krita)$" # Auto-fullscreen Krita
+      #   "noblur, class:^(krita|inkscape|gimp)$" # Disable blur for performance
+      #   "noshadow, class:^(krita|inkscape|gimp)$" # Disable shadows
+      # ];
+
+      # # Workspace configuration
+      # workspace = [
+      #   "special:creative, monitor:DP-1, default:true" # Creative workspace on Wacom
+      # ];
 
       # Gestures https://wiki.hypr.land/Configuring/Variables/#gestures
       gestures = {
@@ -171,15 +230,15 @@
         workspace_swipe_forever = false; # Swiping will not clamp at the neighboring workspaces but continue to the further ones.
       };
 
-      # Per-device config
-      device = {
-        name = "apple-inc.-magic-trackpad";
-        sensitivity = 0.5;
-        accel_profile = "adaptive"; # TODO accel profile needs to be customized to match the ergonomics on Apple computers. 
-        # touchpad = {
-        #   scroll_factor = 0.8;
-        # };
-      };
+      # # Per-device config
+      # device = {
+      #   name = "apple-inc.-magic-trackpad";
+      #   sensitivity = 0.5;
+      #   accel_profile = "adaptive"; # TODO accel profile needs to be customized to match the ergonomics on Apple computers. 
+      #   # touchpad = {
+      #   #   scroll_factor = 0.8;
+      #   # };
+      # };
 
       # Main modifier
       "$mainMod" = "SUPER";

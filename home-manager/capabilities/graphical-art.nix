@@ -4,5 +4,6 @@
     ../components/desktop/raster-editors/krita.nix
     ../components/desktop/modelling/blender.nix
     ../components/aseprite.nix
+    ../components/vtracer.nix
   ];
 }

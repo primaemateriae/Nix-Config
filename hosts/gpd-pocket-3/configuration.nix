@@ -59,7 +59,7 @@
       "i915.enable_psr=0" # Disable panel self refresh (can cause issues)
       "thunderbolt.dyndbg" # Thunderbolt debugging if needed
     ];
-    initrd.kernelModules = [ "hid-wacom" "i915" ];
+    initrd.kernelModules = [ "wacom" "i915" ];
     loader = {
       systemd-boot = {
         enable = true; # EFI boot manager (formally gummiboot).
@@ -194,8 +194,8 @@
         variant = "";
       };
       wacom.enable = true;
-      libinput.enable = true;
     };
+    libinput.enable = true;
 
     blueman.enable = true; # Full featured bluetooth manager written in Python with GTK.
 
