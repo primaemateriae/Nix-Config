@@ -246,6 +246,8 @@
       # "$windowMod" = "CTRL";
       "$rescueMod" = "SUPER SHIFT CTRL";
 
+      # "$terminal" = "${pkgs.wezterm}/bin/wezterm";
+
       # Keybindings
       bind = [
         # "exec, notify-send hello"
@@ -254,10 +256,14 @@
 
         "CTRL, Q, killactive," # Closes (not kills) the active window. For true kill, use forcekillactive
         "CTRL SHIFT, Q, forcekillactive," # Kills (force closes) the active window to close.
-        "$mainMod, Return, exec, $terminal"
+        "$mainMod, Return, exec, ${pkgs.wezterm}/bin/wezterm"
+        "$mainMod, BackSpace, exec, ${pkgs.firefox}/bin/firefox"
+        # "$mainMod, Return, exec, $terminal"
         "$mainMod, E, exec, $fileManager"
+        # "$mainMod, delete, exec, ${pkgs.firefox}/bin/firefox"
         "$mainMod, L, exec, hyprlock --immediate"
-        "$mainMod, P, exec, hyprpicker --autocopy"
+
+        # "$mainMod, P, exec, hyprpicker --autocopy"
         "$mainMod, Space, exec, $menu"
 
         "$windowMod SHIFT, F, togglefloating,"
@@ -270,10 +276,10 @@
         "$windowMod, up, movefocus, u"
         "$windowMod, down, movefocus, d"
 
-        "$windowMod SHIFT, left, swapwindow, l"
-        "$windowMod SHIFT, right, swapwindow, r"
-        "$windowMod SHIFT, up, swapwindow, u"
-        "$windowMod SHIFT, down, swapwindow, d"
+        "$windowMod CTRL, left, swapwindow, l"
+        "$windowMod CTRL, right, swapwindow, r"
+        "$windowMod CTRL, up, swapwindow, u"
+        "$windowMod CTRL, down, swapwindow, d"
 
         # Workspace switching
         "$windowMod, 1, workspace, 1"

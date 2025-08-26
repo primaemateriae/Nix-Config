@@ -34,6 +34,11 @@ or with openssl
 openssl dgst -sha256 -binary <file-path> | base64
 ```
 
+## Repair
+```
+sudo nix-store --verify --check-contents --repair
+```
+
 ## Ephemeral Packages
 There are many times where one may only want a package temporarily. Perhapse the tool is seldom used. Perhpas one is only trying a tool out. 
 
