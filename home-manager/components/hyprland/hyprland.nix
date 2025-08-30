@@ -195,27 +195,28 @@
 
         "CTRL, Q, killactive," # Closes (not kills) the active window. For true kill, use forcekillactive
         "CTRL SHIFT, Q, forcekillactive," # Kills (force closes) the active window to close.
+
+        "$mainMod, Space, exec, $menu"
         "$mainMod, Return, exec, $terminal"
+        "$mainMod, BackSpace, exec, ${pkgs.firefox}/bin/firefox"
         "$mainMod, P, exec, hyprpicker --autocopy"
         "$mainMod, E, exec, $fileManager"
         "$mainMod, L, exec, hyprlock --immediate"
         "$mainMod, P, exec, hyprpicker --autocopy"
-        "$mainMod, Space, exec, $menu"
 
-        "$windowMod SHIFT, F, togglefloating,"
-        "$windowMod SHIFT, P, pseudo,"
-        "$windowMod SHIFT, J, togglesplit,"
+        "$windowMod CTRL, F, togglefloating," # Toggle if the tile should be floating (untiled)
+        "$windowMod CTRL, R, togglesplit," # Toggle how the current window is split.
+        # "$windowMod SHIFT, P, pseudo," # Toggle whether the window will retain its floating size when tiled. 
 
-        # Focus movement
         "$windowMod, left, movefocus, l"
         "$windowMod, right, movefocus, r"
         "$windowMod, up, movefocus, u"
         "$windowMod, down, movefocus, d"
 
-        "$windowMod SHIFT, left, swapwindow, l"
-        "$windowMod SHIFT, right, swapwindow, r"
-        "$windowMod SHIFT, up, swapwindow, u"
-        "$windowMod SHIFT, down, swapwindow, d"
+        "$windowMod CTRL, left, swapwindow, l"
+        "$windowMod CTRL, right, swapwindow, r"
+        "$windowMod CTRL, up, swapwindow, u"
+        "$windowMod CTRL, down, swapwindow, d"
 
         # Workspace switching
         "$windowMod, 1, workspace, 1"
@@ -232,6 +233,8 @@
         "$windowMod, bracketleft,  workspace, e-1"
         "$windowMod, bracketright, workspace, e+1"
 
+        "$windowMod SHIFT, BackSpace, exec, hyprctl dispatch togglefloating && hyprctl dispatch togglefloating"
+
         # Move window to workspace
         "$windowMod CTRL, 1, movetoworkspace, 1"
         "$windowMod CTRL, 2, movetoworkspace, 2"
@@ -245,9 +248,9 @@
         "$windowMod CTRL, 0, movetoworkspace, 10"
 
         # Screen Capture
-        "SUPER SHIFT, 2, exec, grimblast save active --notify ~/Screenshots/grimblast-active-$(date +%F_%H-%M).png "
-        "SUPER SHIFT, 3, exec, grimblast save screen --notify ~/Screenshots/grimblast-screen-$(date +%F_%H-%M).png"
-        "SUPER SHIFT, 4, exec, grimblast save area --notify ~/Screenshots/grimblast-area-$(date +%F_%H-%M).png"
+        "$mainMod, SHIFT, 2, exec, grimblast save active --notify ~/Screenshots/grimblast-active-$(date +%F_%H-%M).png "
+        "$mainMod, SHIFT, 3, exec, grimblast save screen --notify ~/Screenshots/grimblast-screen-$(date +%F_%H-%M).png"
+        "$mainMod, SHIFT, 4, exec, grimblast save area --notify ~/Screenshots/grimblast-area-$(date +%F_%H-%M).png"
 
         # Special workspace (scratchpad)
         # "$mainMod, S, togglespecialworkspace, magic"
@@ -259,7 +262,12 @@
       ];
 
       # Repeating Keybindings (repeats when held down)
-      binde = [ ];
+      binde = [
+        "$windowMod SHIFT, right, resizeactive, 10 0"
+        "$windowMod SHIFT, left, resizeactive, -10 0"
+        "$windowMod SHIFT, up, resizeactive, 0 -10"
+        "$windowMod SHIFT, down, resizeactive, 0 10"
+      ];
 
       # Lock-Pass Keybindings (works while locked)
       bindl = [
