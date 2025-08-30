@@ -1,7 +1,8 @@
 { config, pkgs, lib, inputs, ... }:
 {
   imports = [
-    ../components/desktop/desktops/hyprland/hyprland.nix
+    ../components/hyprland/hyprland.nix
+
     ../components/desktop/widgets/waybar.nix
     ../components/desktop/menu/rofi.nix
 

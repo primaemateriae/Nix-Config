@@ -196,6 +196,7 @@
         "CTRL, Q, killactive," # Closes (not kills) the active window. For true kill, use forcekillactive
         "CTRL SHIFT, Q, forcekillactive," # Kills (force closes) the active window to close.
         "$mainMod, Return, exec, $terminal"
+        "$mainMod, P, exec, hyprpicker --autocopy"
         "$mainMod, E, exec, $fileManager"
         "$mainMod, L, exec, hyprlock --immediate"
         "$mainMod, P, exec, hyprpicker --autocopy"

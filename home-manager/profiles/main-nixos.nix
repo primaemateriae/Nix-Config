@@ -8,6 +8,7 @@
     ../capabilities/tty-core.nix
     ../capabilities/tty-audio.nix
     ../capabilities/tty-development.nix
+    ../capabilities/tty-download.nix
     ../capabilities/tty-fun.nix
 
     ../capabilities/wayland-core.nix

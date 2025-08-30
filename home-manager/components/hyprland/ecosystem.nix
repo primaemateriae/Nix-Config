@@ -103,9 +103,14 @@
       };
     };
   };
+  home.packages = with pkgs; [
+    hyprpicker
+    hyprland-qt-support
+    hyprsysteminfo
+  ];
   # home.packages = with inputs.hyprland.packages.${pkgs.system}; [
-  # hyprpicker
-  # hyprland-qt-support
-  # hyprsysteminfo
+  #   hyprpicker
+  #   hyprland-qt-support
+  #   hyprsysteminfo
   # ];
 }

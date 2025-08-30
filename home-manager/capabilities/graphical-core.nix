@@ -1,7 +1,8 @@
 { config, pkgs, lib, inputs, ... }:
 {
   imports = [
-    ../components/desktop/file-manager/dolphin.nix
+    ../components/dolphin.nix
+    ../components/nemo.nix
     ../components/desktop/terminal-emulator/wezterm.nix
     ../components/desktop/browsers/firefox.nix
     ../components/desktop/browsers/ungoogled-chromium.nix
